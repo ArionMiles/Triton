@@ -18,25 +18,25 @@ def issue():
     r = requests.get(url=BASEURL, headers=headers)
     dictionary = json.loads(r.text)
     try:
-    	for i in dictionary:
-        	#global messageTitle 
-        	messageTitle = i['title']
         for i in dictionary:
-        	#global messageBody 
-        	messageBody = i['body']
+            #global messageTitle
+            messageTitle = i['title']
+        for i in dictionary:
+            #global messageBody
+            messageBody = i['body']
         if messageTitle and messageBody is None:
-        	messageContent = "Nothing to show."
+            messageContent = "Nothing to show."
         else:
-        	#global messageContent
-        	messageContent = messageTitle + messageBody
+            #global messageContent
+            messageContent = messageTitle + messageBody
     except IndexError as e:
-    	print 'IndexError. Reason: "%s"' % str(e)
+        print 'IndexError. Reason: "%s"' % str(e)
     except KeyError as e:
-    	print 'KeyError. Reason: "%s"' % (str(e))
-	#output = str(r.text)
-    
+        print 'KeyError. Reason: "%s"' % (str(e))
+    #output = str(r.text)
+
     return messageContent
 #issue()
 
-#if __name__ == '__main__':
-#    issue()
+if __name__ == '__main__':
+    issue()

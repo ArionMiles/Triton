@@ -1,8 +1,10 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
 import requests
 import json
 import ConfigParser
-from github import issue
+from github import notifications
+import time
+import schedule
 import logging
 
 # Read settings from creds.ini
@@ -10,10 +12,11 @@ config = ConfigParser.RawConfigParser()
 config.read('creds.ini')
 TOKEN = config.get('BOT', 'TOKEN')
 CHAT_ID = config.get('BOT', 'CHAT_ID')
-#API_ENDPOINT = "https://api.telegram.org/bot%s/sendMessage" % (TOKEN) 
 APP_NAME = config.get('BOT', 'APP_NAME')
 #PORT = int(os.environ.get('PORT', '5000'))
 updater = Updater(TOKEN)
+j = updater.job_queue
+
 
 # Setting Webhook
 '''
@@ -30,31 +33,23 @@ dispatcher = updater.dispatcher
 def start(bot, update):
 	bot.sendMessage(chat_id=update.message.chat_id, text="Hi! I'm a GitHub Issue Tracker!")
 
-def newIssue(bot, update):
-	#output = 'FUCK IS THIS SHIT?!'
-  output = issue()
-  bot.sendMessage(chat_id=update.message.chat_id, text=output)
+def newAlert(bot, job):
+	print "Printing every 1 minute."
+	output = notifications()
+	bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
-def unknown(bot, update):
-	bot.sendMessage(chat_id=update.message.chat_id, text="Sorry, I didn't get that.")
-
-
+job_minute = Job(newAlert, 60.0)
+j.put(job_minute, next_t=0.0)
 # Handlers
-start_handler = CommandHandler('start', start)
-newIssue_handler = CommandHandler('issue', newIssue)
-unknown_handler = MessageHandler(Filters.command, unknown)
-unknown_message = MessageHandler(Filters.text, unknown)
+#notifications_handler = CommandHandler('issue', newIssue)
 
 # Dispatchers
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(newIssue_handler)
-dispatcher.add_handler(unknown_handler)
-dispatcher.add_handler(unknown_message)
-
+#dispatcher.add_handler(notifications_handler)
+'''
+schedule.every(1).minutes.do(newAlert)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+'''
 updater.start_polling()
 updater.idle()
-
-#if __name__ == '__main__':
-    # service.py executed as script
-    # do something
-#    newIssue()

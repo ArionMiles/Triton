@@ -2,7 +2,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
 import requests
 import json
 import ConfigParser
-from github import notifications
+from github import notifications2
 import time
 import schedule
 import logging
@@ -31,12 +31,18 @@ dispatcher = updater.dispatcher
 
 # Real stuff
 def start(bot, update):
-	bot.sendMessage(chat_id=update.message.chat_id, text="Hi! I'm a GitHub Issue Tracker!")
+    bot.sendMessage(chat_id=update.message.chat_id, text="Hi! I'm a GitHub Issue Tracker!")
 
 def newAlert(bot, job):
-	print "Printing every 1 minute."
-	output = notifications()
-	bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
+    print "Printing every 1 minute."
+    output = notifications2()
+    if output is None:
+        return
+    else:
+        bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
+    #job.repeat = False
+    #print output
+    #bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
 job_minute = Job(newAlert, 60.0)
 j.put(job_minute, next_t=0.0)

@@ -12,29 +12,17 @@ r = requests.get(url=BASEURL, headers=headers)
 #with open('sample.json') as sample:
     #dictionary = json.loads(sample.read())
 dictionary = json.loads(r.text)
-def notifications2():
+def notifications():
     try:
         if dictionary: #Simple check to see response isn't empty
-            #Do a loop here
-            messageContent = notifications()
+            messageContent = notifications2()
             return messageContent
         else:
             return None
-        '''if 'id' not in dictionary[0]: #Simple check to see if a key exists in the response
-            #Do a loop here
-            messageContent = "Empty response!"
-            return messageContent
-        else:
-            messageContent = notifications()
-            return messageContent'''
     except IndexError as e:
         print str(e)
-def notifications():
+def notifications2():
     '''Check GitHub for Notifications'''
-    '''r = requests.get(url=BASEURL, headers=headers)
-    #with open('sample.json') as sample:
-    #    dictionary = json.loads(sample.read())
-    dictionary = json.loads(r.text)'''
     try:
         for i in dictionary:
             '''Repo Owner Info'''
@@ -49,16 +37,13 @@ def notifications():
             subjectTitle = i['subject']['title']
             subjectURL = i['subject']['url']
             subjectType = i['subject']['type']
-            '''if messageTitle and messageBody is None:
-                messageContent = "Nothing to show."
-            else:'''
+            '''Message'''
             messageContent = '\nFrom: [{repoOwner}]({repoOwnerURL}) \
                           \nRepository: [{repoName}]({repoURL})\
                           \nSubject: [{subjectTitle}]({subjectURL})\
                           \nType: {subjectType}' .format(repoOwner = repoOwner, repoOwnerURL=repoOwnerURL,
                                     repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL,
-                                    subjectType=subjectType)    
-            #print (messageContent)
+                                    subjectType=subjectType)
     except IndexError as e:
         print 'IndexError. Reason: "%s"' % str(e)
     except KeyError as e:

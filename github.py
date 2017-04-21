@@ -1,30 +1,33 @@
-import requests
+'''Import requirements'''
 import json
+
 import ConfigParser
+
+import requests
+
 # Read settings from creds.ini
-config = ConfigParser.RawConfigParser()
-config.read('creds.ini')
-GitToken = config.get('GITHUB', 'GitToken')
-headers = {'Authorization' : GitToken}
+CONFIG = ConfigParser.RawConfigParser()
+CONFIG.read('creds.ini')
+GITTOKEN = CONFIG.get('GITHUB', 'GitToken')
+HEADERS = {'Authorization' : GITTOKEN}
 
 BASEURL = "https://api.github.com/notifications"
-r = requests.get(url=BASEURL, headers=headers)
+R = requests.get(url=BASEURL, headers=HEADERS)
 #with open('sample.json') as sample:
     #dictionary = json.loads(sample.read())
-dictionary = json.loads(r.text)
+DICTIONARY = json.loads(R.text)
 def notifications():
+    '''Main part'''
     try:
-        if dictionary: #Simple check to see response isn't empty
+        if DICTIONARY: #Simple check to see response isn't empty
             messageContent = notifications2()
             return messageContent
-        else:
-            return None
-    except IndexError as e:
-        print str(e)
+    except IndexError as E:
+        print str(E)
 def notifications2():
     '''Check GitHub for Notifications'''
     try:
-        for i in dictionary:
+        for i in DICTIONARY:
             '''Repo Owner Info'''
             repoOwner = i['repository']['owner']['login']
             repoOwnerURL = i['repository']['owner']['url']
@@ -44,10 +47,10 @@ def notifications2():
                           \nType: {subjectType}' .format(repoOwner = repoOwner, repoOwnerURL=repoOwnerURL,
                                     repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL,
                                     subjectType=subjectType)
-    except IndexError as e:
-        print 'IndexError. Reason: "%s"' % str(e)
-    except KeyError as e:
-        print 'KeyError. Reason: "%s"' % (str(e))
+    except IndexError as E:
+        print 'IndexError. Reason: "%s"' % str(E)
+    except KeyError as E:
+        print 'KeyError. Reason: "%s"' % (str(E))
 
     return messageContent
 

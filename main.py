@@ -1,21 +1,17 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
-import requests
-import json
+'''BOT FILE'''
 import ConfigParser
-from github import notifications
-import time
-import schedule
 import logging
-
+from telegram.ext import Updater, Job
+from github import notifications
 # Read settings from creds.ini
-config = ConfigParser.RawConfigParser()
-config.read('creds.ini')
-TOKEN = config.get('BOT', 'TOKEN')
-CHAT_ID = config.get('BOT', 'CHAT_ID')
-APP_NAME = config.get('BOT', 'APP_NAME')
+CONFIG = ConfigParser.RawConfigParser()
+CONFIG.read('creds.ini')
+TOKEN = CONFIG.get('BOT', 'TOKEN')
+CHAT_ID = CONFIG.get('BOT', 'CHAT_ID')
+APP_NAME = CONFIG.get('BOT', 'APP_NAME')
 #PORT = int(os.environ.get('PORT', '5000'))
-updater = Updater(TOKEN)
-j = updater.job_queue
+UPDATER = Updater(TOKEN)
+j = UPDATER.job_queue
 
 # Setting Webhook
 '''
@@ -25,15 +21,17 @@ updater.start_webhook(listen="0.0.0.0",
 updater.bot.setWebhook(APP_NAME + TOKEN)
 '''
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-dispatcher = updater.dispatcher
+DISPACTHER = UPDATER.dispatcher
 
 # Real stuff
-def start(bot, update):
+'''def start(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id, text="Hi! I'm a GitHub Issue Tracker!")
+'''
 
 def newAlert(bot, job):
+    '''Run loop'''
     print "Printing every 1 minute."
     output = notifications()
     if output is None:
@@ -41,8 +39,8 @@ def newAlert(bot, job):
     else:
         bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
-job_minute = Job(newAlert, 60.0)
-j.put(job_minute, next_t=0.0)
+JOB_MINUTE = Job(newAlert, 60.0)
+j.put(JOB_MINUTE, next_t=0.0)
 
-updater.start_polling()
-updater.idle()
+UPDATER.start_polling()
+UPDATER.idle()

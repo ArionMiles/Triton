@@ -37,7 +37,8 @@ def newAlert(bot, job):
     if output is None:
         return
     else:
-        bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
+        print output
+        #bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
 JOB_MINUTE = Job(newAlert, 60.0)
 j.put(JOB_MINUTE, next_t=0.0)

@@ -15,7 +15,7 @@ HEADERS = {'Authorization' : GITTOKEN}
 BASEURL = "https://api.github.com/notifications"
 R = requests.get(url=BASEURL, headers=HEADERS)
 #with open('sample.json') as sample:
-    #dictionary = json.loads(sample.read())
+#    DICTIONARY = json.loads(sample.read())
 DICTIONARY = json.loads(R.text)
 def notifications():
     '''Main part'''
@@ -34,13 +34,13 @@ def notifications2():
         else:
             with open("notification_id.txt", "r") as f:
                 notif_id = f.read()
-                notif_id = notif_id.split("\n")
+                notif_id = notif_id.split('\n')
                 notif_id = list(filter(None, notif_id))
 
         for i in DICTIONARY:
-            if i['repository']['id'] not in notif_id:
+            if str(i['id']) not in notif_id:
                 '''Repo Owner Info'''
-                notif_id = i['id']
+                notif_id = str(i['id'])
                 repoOwner = i['repository']['owner']['login']
                 repoOwnerURL = i['repository']['owner']['html_url']
 
@@ -59,8 +59,10 @@ def notifications2():
                       \nType: {subjectType}' .format(repoOwner = repoOwner, repoOwnerURL=repoOwnerURL,
                                 repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL,
                                 subjectType=subjectType)
-                f = open('notification_id.txt', 'w')
+                f = open('notification_id.txt', 'a')
                 f.write (notif_id + '\n')
+            else:
+                messageContent = None
                 #return messageContent
 
     except IndexError as E:
@@ -69,7 +71,7 @@ def notifications2():
         print 'KeyError. Reason: %s' % (str(E))
 
     return messageContent
-
+#notifications()
 #if __name__ == '__main__':
 #    notifications()
     #this needs fixing

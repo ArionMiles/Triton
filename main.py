@@ -32,7 +32,7 @@ DISPACTHER = UPDATER.dispatcher
 
 def newAlert(bot, job):
     '''Run loop'''
-    print "Printing every 1 minute."
+    print "Printing every 10 seconds"
     output = notifications()
     if output is None:
         return
@@ -40,7 +40,7 @@ def newAlert(bot, job):
         print output
         #bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
-JOB_MINUTE = Job(newAlert, 60.0)
+JOB_MINUTE = Job(newAlert, 10.0)
 j.put(JOB_MINUTE, next_t=0.0)
 
 UPDATER.start_polling()

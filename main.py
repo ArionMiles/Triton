@@ -21,7 +21,7 @@ updater.start_webhook(listen="0.0.0.0",
 updater.bot.setWebhook(APP_NAME + TOKEN)
 '''
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
 
 DISPACTHER = UPDATER.dispatcher
 

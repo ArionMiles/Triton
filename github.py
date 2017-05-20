@@ -1,5 +1,6 @@
 '''Import requirements'''
 import os
+
 import json
 
 import ConfigParser
@@ -50,6 +51,12 @@ def notifications2():
                 '''Subject'''
                 subjectTitle = i['subject']['title']
                 subjectURL = i['subject']['latest_comment_url']
+                req = requests.get(url=subjectURL, headers=HEADERS)
+                reqdict = json.loads(req.text)
+                #print (reqdict)
+                #for url in reqdict:
+                subjectURL2 = reqdict['html_url']
+                #print (subjectURL2)
                 subjectType = i['subject']['type']
 
                 '''Message'''
@@ -57,7 +64,7 @@ def notifications2():
                       \nRepository: [{repoName}]({repoURL})\
                       \nSubject: [{subjectTitle}]({subjectURL})\
                       \nType: {subjectType}' .format(repoOwner = repoOwner, repoOwnerURL=repoOwnerURL,
-                                repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL,
+                                repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL2,
                                 subjectType=subjectType)
                 f = open('notification_id.txt', 'a')
                 f.write (notif_id + '\n')
@@ -72,6 +79,7 @@ def notifications2():
 
     return messageContent
 #notifications()
-#if __name__ == '__main__':
-#    notifications()
+if __name__ == '__main__':
+    pass
+    #notifications()
     #this needs fixing

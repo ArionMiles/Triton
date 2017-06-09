@@ -1,4 +1,4 @@
-'''BOT FILE'''
+'''Monitor'''
 import ConfigParser
 import logging
 from telegram.ext import Updater, Job
@@ -13,34 +13,19 @@ APP_NAME = CONFIG.get('BOT', 'APP_NAME')
 UPDATER = Updater(TOKEN)
 j = UPDATER.job_queue
 
-# Setting Webhook
-'''
-updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
-                      url_path=TOKEN)
-updater.bot.setWebhook(APP_NAME + TOKEN)
-'''
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
 
 DISPACTHER = UPDATER.dispatcher
 
-# Real stuff
-'''def start(bot, update):
-    bot.sendMessage(chat_id=update.message.chat_id, text="Hi! I'm a GitHub Issue Tracker!")
-'''
-
 def newAlert(bot, job):
-    '''Run loop'''
-    print "Printing every 10 seconds"
+    '''Polls the GitHub API every one minute for new notifications.'''
     output = notifications()
     if output is None:
         return
     else:
-        print output
-        #bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
+        bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
-JOB_MINUTE = Job(newAlert, 10.0)
+JOB_MINUTE = Job(newAlert, 60.0)
 j.put(JOB_MINUTE, next_t=0.0)
 
 UPDATER.start_polling()

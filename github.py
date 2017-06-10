@@ -59,7 +59,6 @@ def notifications():
                     record.write (unique_id + '\n')
                 else:
                     messageContent = None
-                    #return messageContent
 
         except IndexError as E:
             print 'IndexError. Reason: %s' % str(E)

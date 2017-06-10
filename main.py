@@ -8,8 +8,7 @@ CONFIG = ConfigParser.RawConfigParser()
 CONFIG.read('creds.ini')
 TOKEN = CONFIG.get('BOT', 'TOKEN')
 CHAT_ID = CONFIG.get('BOT', 'CHAT_ID')
-APP_NAME = CONFIG.get('BOT', 'APP_NAME')
-#PORT = int(os.environ.get('PORT', '5000'))
+
 UPDATER = Updater(TOKEN)
 j = UPDATER.job_queue
 
@@ -18,14 +17,14 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 DISPACTHER = UPDATER.dispatcher
 
 def newAlert(bot, job):
-    '''Polls the GitHub API every one minute for new notifications.'''
+    '''Polls the GitHub API every 2.5 minutes for new notifications.'''
     output = notifications()
     if output is None:
         return
     else:
         bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
-JOB_MINUTE = Job(newAlert, 60.0)
+JOB_MINUTE = Job(newAlert, 150.0)
 j.put(JOB_MINUTE, next_t=0.0)
 
 UPDATER.start_polling()

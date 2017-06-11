@@ -22,10 +22,8 @@ def newAlert(bot, job):
     '''Polls the GitHub API every 2.5 minutes for new notifications.'''
     print 'Polling every 10 seconds'
     output = notifications()
-    if output is None:
-        return
-    else:
-        bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
+    if output:
+    	bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
 
 JOB_MINUTE = Job(newAlert, 10.0)
 j.put(JOB_MINUTE, next_t=0.0)

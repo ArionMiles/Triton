@@ -2,12 +2,10 @@
 import os
 import ConfigParser
 import logging
-#from boto.s3.connection import S3Connection
 from telegram.ext import Updater, Job
 from github import notifications
-# Read settings from creds.ini
-#CONFIG = ConfigParser.RawConfigParser()
-#CONFIG.read('creds.ini')
+
+# Loading environment variables
 TOKEN = os.environ['TOKEN']
 CHAT_ID = os.environ['CHAT_ID']
 
@@ -19,7 +17,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 DISPACTHER = UPDATER.dispatcher
 
 def newAlert(bot, job):
-    '''Polls the GitHub API every 2.5 minutes for new notifications.'''
+    '''[DEVELOPMENT] Polls the GitHub API every 10 seconds for new notifications.'''
     print 'Polling every 10 seconds'
     output = notifications()
     if output:

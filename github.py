@@ -7,11 +7,6 @@ import ConfigParser
 
 import requests
 
-#from boto.s3.connection import S3Connection
-
-# Read settings from creds.ini
-#CONFIG = ConfigParser.RawConfigParser()
-#CONFIG.read('creds.ini')
 GITTOKEN = os.environ['GitToken']
 HEADERS = {'Authorization' : GITTOKEN}
 BASEURL = "https://api.github.com/notifications"

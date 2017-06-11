@@ -80,3 +80,10 @@ curl_response2\.json
 updated_at\.txt
 
 curl_response3\.json
+.env 
+
+test3\.py
+
+*.env
+
+requirements

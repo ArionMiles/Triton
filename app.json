@@ -1,0 +1,7 @@
+{
+  "name": "Notifications Tracker",
+  "description": "Forward GitHub notifications to Telegram.",
+  "image": "heroku/python",
+  "repository": "https://github.com/ArionMiles/Notifications-Tracker/",
+  "keywords": ["python", "telegram", "python-telegram-bot" ]
+}

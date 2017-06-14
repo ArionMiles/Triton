@@ -87,3 +87,5 @@ test3\.py
 *.env
 
 requirements
+
+test4\.py

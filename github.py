@@ -7,11 +7,6 @@ import ConfigParser
 
 import requests
 
-#from boto.s3.connection import S3Connection
-
-# Read settings from creds.ini
-#CONFIG = ConfigParser.RawConfigParser()
-#CONFIG.read('creds.ini')
 GITTOKEN = os.environ['GitToken']
 HEADERS = {'Authorization' : GITTOKEN}
 BASEURL = "https://api.github.com/notifications"
@@ -57,8 +52,8 @@ def notifications():
                       \nType: {subjectType}' .format(repoOwner = repoOwner, repoOwnerURL=repoOwnerURL,
                         repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL2,
                         subjectType=subjectType)
-                    record = open('updated_at.txt', 'a')
-                    record.write (unique_id + '\n')
+                    with open('updated_at.txt', 'a') as record:
+                        record.write(unique_id + '\n')
                 else:
                     messageContent = None
 

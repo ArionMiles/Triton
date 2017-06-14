@@ -23,7 +23,7 @@ def main(config):
         output = notifications(config)
         if output:
             bot.sendMessage(chat_id=config['chat_id'], text=output, parse_mode='markdown', \
-                disable_web_page_view=True)
+                disable_web_page_preview=True)
 
     job_minute = Job(newAlert, 10.0)
     j.put(job_minute, next_t=0.0)

@@ -21,9 +21,8 @@ def build_notification_message(notification, config):
     repo = notification['repository']
     repoName = repo['name']
     repoURL = repo['html_url']
-
-    repoOwner = repo['owner']['login']
-    repoOwnerURL = repo['owner']['html_url']
+    #repoOwner = repo['owner']['login']
+    #repoOwnerURL = repo['owner']['html_url']
 
     subjectTitle = notification['subject']['title']
     subjectURL = notification['subject']['latest_comment_url']
@@ -33,16 +32,22 @@ def build_notification_message(notification, config):
     subjectURL2 = subject_resp['html_url']
     subjectType = notification['subject']['type']
 
+    senderName = subject_resp['user']['login']
+    senderName_URL = subject_resp['user']['html_url']
+    comment = subject_resp['body']
+
     message_template = textwrap.dedent("""
-    From: [{repoOwner}]({repoOwnerURL})
+    From: [{senderName}]({senderName_URL})
     Repository: [{repoName}]({repoURL})
     Subject: [{subjectTitle}]({subjectURL})
+    Body: {comment}
     Type: {subjectType}
     """)
 
-    messageContent = message_template.format(repoOwner=repoOwner, repoOwnerURL=repoOwnerURL,
-                                             repoName=repoName, repoURL=repoURL, subjectTitle=subjectTitle, subjectURL=subjectURL2,
-                                             subjectType=subjectType)
+    messageContent = message_template.format(senderName=senderName, senderName_URL=senderName_URL,
+                                             repoName=repoName, repoURL=repoURL, 
+                                             subjectTitle=subjectTitle, subjectURL=subjectURL2,
+                                             comment=comment, subjectType=subjectType)
     return messageContent
 
 

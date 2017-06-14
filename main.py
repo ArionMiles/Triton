@@ -2,29 +2,37 @@
 import os
 import ConfigParser
 import logging
-from telegram.ext import Updater, Job
 from github import notifications
+from telegram.ext import Updater, Job
 
-# Loading environment variables
-TOKEN = os.environ['TOKEN']
-CHAT_ID = os.environ['CHAT_ID']
 
-UPDATER = Updater(TOKEN)
-j = UPDATER.job_queue
+def get_config():
+    token = os.environ['TOKEN']
+    chat_id = os.environ['CHAT_ID']
+    gittoken = os.environ['GITTOKEN']
+    return dict(token=token, chat_id=chat_id, gittoken=gittoken)
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
 
-DISPACTHER = UPDATER.dispatcher
+def main(config):
+    #print config['token']
+    updater = Updater(config['token'])
+    j = updater.job_queue
 
-def newAlert(bot, job):
-    '''[DEVELOPMENT] Polls the GitHub API every 10 seconds for new notifications.'''
-    print 'Polling every 10 seconds'
-    output = notifications()
-    if output:
-    	bot.sendMessage(chat_id=CHAT_ID, text=output, parse_mode='markdown')
+    def newAlert(bot, job):
+        '''Polls the GitHub API every 2.5 minutes for new notifications.'''
+        output = notifications(config)
+        if output:
+            bot.sendMessage(chat_id=config['chat_id'], text=output, parse_mode='markdown', \
+                disable_web_page_view=True)
 
-JOB_MINUTE = Job(newAlert, 10.0)
-j.put(JOB_MINUTE, next_t=0.0)
+    job_minute = Job(newAlert, 10.0)
+    j.put(job_minute, next_t=0.0)
 
-UPDATER.start_polling()
-UPDATER.idle()
+    updater.start_polling()
+    updater.idle()
+
+
+if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
+    config = get_config()
+    main(config)

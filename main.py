@@ -14,7 +14,6 @@ def get_config():
 
 
 def main(config):
-    #print config['token']
     updater = Updater(config['token'])
     j = updater.job_queue
 

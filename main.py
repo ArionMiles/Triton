@@ -25,7 +25,7 @@ def main(config):
             bot.sendMessage(chat_id=config['chat_id'], text=output, parse_mode='markdown', \
                 disable_web_page_preview=True)
 
-    job_minute = Job(newAlert, 10.0)
+    job_minute = Job(newAlert, 150.0) #Time in seconds
     j.put(job_minute, next_t=0.0)
 
     updater.start_polling()

@@ -4,7 +4,14 @@ Forward GitHub notifications to Telegram.
 Author: Arion Miles (Kanishk Singh)
 
 # Introduction
+
+Triton is a Telegram Bot which forwards my GitHub notifications. Named after [the Greek God](https://en.wikipedia.org/wiki/Triton_(mythology)), the messenger of the seas.
+
 Uses [GitHub API v3](https://developer.github.com/v3/) to monitor for new notifications and then formats it, and forwards to your Telegram Messenger via a bot. Who constantly checks email, amirite? I'm always online on Telegram so I might as well have the notifications delivered there instead of using the default email method. Plus, it was a learning experience! Really, I don't have a better motive to explain why I made this.
+
+I'm always trying to make Triton better. But nothing's perfect. I'm looking for a way to reduce polling times without hitting my API requests limit. Currently it checks for a notification every 2.5mins.
+
+![Screenshot](screenshot.png "Screenshot")
 
 # Installation
 
@@ -25,10 +32,10 @@ On **Windows**, run: `set TOKEN=<Telegram-Bot-Token> & set CHAT_ID=<9-Digit Chat
 Add the tokens you received earlier. Remember to leave the `token` word in the `GITTOKEN` as it is because it is required in the headers by the API, or you'll get a `TypeError` because the program will never find any JSON output.
 
 # To-Do
-- [ ] Add images
+- [x] Add images
 - [x] Edit/Fine Tune MessageContent. (add comment text, if possible)
 - [x] Put a try-except block to catch any exceptions for debugging.
-- [ ] Change name to something better.
+- [x] Change name to something better. (previously Notifications-Tracker)
 - [ ] Add repo to https://gallery.devup.in/
 - [ ] Add python3 compatibility
 

@@ -36,7 +36,7 @@ Add the tokens you received earlier. Remember to leave the `token` word in the `
 - [x] Edit/Fine Tune MessageContent. (add comment text, if possible)
 - [x] Put a try-except block to catch any exceptions for debugging.
 - [x] Change name to something better. (previously Notifications-Tracker)
-- [ ] Add repo to https://gallery.devup.in/
+- [x] Add repo to https://gallery.devup.in/
 - [ ] Add python3 compatibility
 
 # Contributors

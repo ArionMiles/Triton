@@ -99,3 +99,5 @@ curl_response5\.json
 curl_response4\.json
 
 set_vars\.txt
+
+venv/

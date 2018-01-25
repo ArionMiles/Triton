@@ -3,6 +3,8 @@ import os
 import json
 import textwrap
 import requests
+from database import init_db, db_session
+from models import UniqueID
 
 BASEURL = "https://api.github.com/notifications"
 
@@ -39,9 +41,10 @@ def build_notification_message(notification, config):
     message_template = textwrap.dedent("""
     From: [{senderName}]({senderName_URL})
     Repository: [{repoName}]({repoURL})
-    Subject: [{subjectTitle}]({subjectURL})
+    Subject: {subjectTitle}
     Body: {comment}
     Type: {subjectType}
+    [See on Github]({subjectURL})
     """)
 
     messageContent = message_template.format(senderName=senderName, senderName_URL=senderName_URL,
@@ -55,15 +58,19 @@ def notifications(config):
     """Check GitHub for Notifications"""
     req = requests.get(url=BASEURL, headers={'Authorization' : config['gittoken']})
     notifications = json.loads(req.text)
-    unique_id = get_unique_ids()
+    #unique_id = get_unique_ids()
+    init_db()
 
     messageContent = None
     for notification in notifications:
-        if str(notification['updated_at']) not in unique_id:
+        if not UniqueID.query.filter(UniqueID.updated_at == str(notification['updated_at'])).first():
             unique_id = str(notification['updated_at'])
             messageContent = build_notification_message(notification, config)
-            with open('updated_at.txt', 'a') as record:
-                record.write (unique_id + '\n')
+            
+            #Add new value to the db
+            updated_record = UniqueID(updated_at=unique_id)
+            db_session.add(updated_record)
+            db_session.commit()
 
     return messageContent
 

@@ -1,3 +1,5 @@
 python-telegram-bot
 requests
 boto
+sqlalchemy
+psycopg2

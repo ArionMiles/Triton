@@ -3,7 +3,7 @@ import os
 import ConfigParser
 import logging
 from github import notifications
-from telegram.ext import Updater, Job
+from telegram.ext import Updater
 
 
 def get_config():
@@ -24,8 +24,7 @@ def main(config):
             bot.sendMessage(chat_id=config['chat_id'], text=output, parse_mode='markdown', \
                 disable_web_page_preview=True)
 
-    job_minute = Job(newAlert, 150.0) #Time in seconds
-    j.put(job_minute, next_t=0.0)
+    j.run_repeating(newAlert, 150.0)
 
     updater.start_polling()
     updater.idle()
